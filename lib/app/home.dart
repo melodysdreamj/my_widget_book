@@ -153,6 +153,11 @@ class _HomeViewState extends State<HomeView> {
         .map((e) => e[0].toUpperCase() + e.substring(1))
         .join(' ');
 
+    // Remove " lego" if it exists, case insensitive
+    if (text.toLowerCase().endsWith(' lego')) {
+      text = text.substring(0, text.length - 5); // Remove the last 5 characters
+    }
+
     // Return the TextButton widget
     return Row(
       children: [
