@@ -6,8 +6,7 @@ import 'package:url_launcher/url_launcher.dart';
 
 import '../../../../../../main.dart';
 import '../../../../config.dart';
-import '../../../data/widgets.dart';
-import '../vm/_.dart';
+import 'widgets.dart';
 
 class HomeView extends StatefulWidget {
   const HomeView({super.key});
@@ -42,83 +41,96 @@ class _HomeViewState extends State<HomeView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: JuneBuilder(
-        () => HomeVM(),
-        builder: (vmHome) => KeyboardListener(
-          focusNode: _focusNode,
-          onKeyEvent: (KeyEvent event) {
-            if (event is KeyDownEvent) {
-              if (event.logicalKey == LogicalKeyboardKey.arrowUp) {
-                _setSelectedIndex(
-                    (_selectedIndex - 1).clamp(0, widgets.length - 1));
-              } else if (event.logicalKey == LogicalKeyboardKey.arrowDown) {
-                _setSelectedIndex(
-                    (_selectedIndex + 1).clamp(0, widgets.length - 1));
-              }
+      body: KeyboardListener(
+        focusNode: _focusNode,
+        onKeyEvent: (KeyEvent event) {
+          if (event is KeyDownEvent) {
+            if (event.logicalKey == LogicalKeyboardKey.arrowUp) {
+              _setSelectedIndex(
+                  (_selectedIndex - 1).clamp(0, widgets.length - 1));
+            } else if (event.logicalKey == LogicalKeyboardKey.arrowDown) {
+              _setSelectedIndex(
+                  (_selectedIndex + 1).clamp(0, widgets.length - 1));
             }
-          },
-          child: Row(
-            children: <Widget>[
-              Flexible(
-                flex: 4,
-                child: Container(
-                  color: Colors.black,
-                  height: double.infinity,
-                  child: SingleChildScrollView(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisSize: MainAxisSize.max,
-                      children: [
-                        Gap(20),
-                        Row(
-                          children: [
-                            Icon(
-                              Icons.phone_iphone,
-                              color: Colors.white,
-                              size: 30,
-                            ),
-                            Gap(10),
-                            CupertinoSwitch(
-                              value: vmHome.switchMobileMode,
-                              onChanged: (bool value) {
-                                switchModeEvent(value);
+          }
+        },
+        child: Row(
+          children: <Widget>[
+            Flexible(
+              flex: 4,
+              child: Container(
+                color: Colors.black,
+                height: double.infinity,
+                child: SingleChildScrollView(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.max,
+                    children: [
+                      Gap(20),
+                      Row(
+                        children: [
+                          Icon(
+                            Icons.phone_iphone,
+                            color: Colors.white,
+                            size: 30,
+                          ),
+                          Gap(10),
+                          CupertinoSwitch(
+                            value: _switchValue,
+                            onChanged: (bool value) {
+                              setState(() {
+                                _switchValue = value;
+                              });
+                            },
+                          ),
+                          Spacer(),
+                          // github icon
+                          IconButton(
+                              onPressed: () {
+                                _openUrl(githubUrl);
                               },
-                            ),
-                          ],
-                        ).padding(left: 20),
-                        Gap(20),
-                        Text("${userName}'s\nWidget Book",
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 35,
-                                    fontWeight: FontWeight.bold))
-                            .padding(left: 20, right: 10),
-                        Gap(20),
-                        ...List.generate(widgets.length, (index) {
-                          return _buildTextButton(widgets[index].item1, index);
-                        }),
-                      ],
-                    ),
+                              // color: Colors.white,
+                              icon: SvgPicture.asset(
+                                'assets/github.svg',
+                                width: 30,
+                                height: 30,
+                                colorFilter: ColorFilter.mode(Colors.white, BlendMode.srcIn),
+                              )),
+
+                        ],
+                      ).padding(left: 20,right: 10),
+                      Gap(20),
+                      Text("${userName}'s\nWidget Book",
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 35,
+                              fontWeight: FontWeight.bold))
+                          .padding(left: 20, right: 10),
+                      Gap(20),
+                      ...List.generate(widgets.length, (index) {
+                        return _buildTextButton(widgets[index].item1, index);
+                      }),
+                    ],
                   ),
                 ),
               ),
-              Flexible(
-                flex: 7,
-                child: IndexedStack(
-                  index: _loading ? 0 : 1,
-                  children: <Widget>[
-                    DevicePreview(
-                      builder: (context) =>
-                          CupertinoActivityIndicator().center(),
-                      backgroundColor: Colors.grey.withOpacity(0.1),
-                      isToolbarVisible: false,
-                    ),
-                    _buildContent(vmHome.switchMobileMode),
-                  ],
-                ),
+            ),
+            Flexible(
+              flex: 7,
+              child: IndexedStack(
+                index: _loading ? 0 : 1,
+                children: <Widget>[
+                  DevicePreview(
+                    builder: (context) =>
+                        CupertinoActivityIndicator().center(),
+                    backgroundColor: Colors.grey.withOpacity(0.1),
+                    isToolbarVisible: false,
+                  ),
+                  _buildContent(_switchValue),
+                ],
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
@@ -204,7 +216,7 @@ class _HomeViewState extends State<HomeView> {
   }
 
   startLoading() {
-    if (!June.getState(() => HomeVM()).switchMobileMode) return;
+    if (!_switchValue) return;
     setState(() {
       _loading = true;
     });
@@ -214,11 +226,6 @@ class _HomeViewState extends State<HomeView> {
       });
     });
   }
-}
-
-/// event ///
-switchModeEvent(bool value) {
-  June.getState(() => HomeVM()).switchModel(value);
 }
 
 void main() async {

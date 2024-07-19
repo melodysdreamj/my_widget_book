@@ -5,7 +5,7 @@ export 'package:styled_widget/styled_widget.dart';
 import 'package:flutter/material.dart';
 
 export 'util/_/shared_params/_/start_app_params.dart';
-import 'app/screen/home/_/_.dart';
+import 'app/home.dart';
 import 'util/_/build_app/widget/run_app/_.dart';
 export 'package:flutter/services.dart';
 export 'util/_/build_app/widget/run_app/_.dart';

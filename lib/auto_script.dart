@@ -2,7 +2,7 @@ import 'dart:io';
 import 'package:tuple/tuple.dart';
 
 void main() async {
-  String filePath = 'lib/app/data/widgets.dart';
+  String filePath = 'lib/app/widgets.dart';
   String existingCode = await File(filePath).readAsString();
 
   String directoryPath = 'lib/widget_book';

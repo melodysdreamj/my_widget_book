@@ -30,9 +30,11 @@ dev_dependencies:
     sdk: flutter
   flutter_lints:
   hello_world_page_lego:
-  june_lego:
   screenutil_lego:
   bot_toast_lego:
 
 flutter:
   uses-material-design: true
+  assets:
+    - assets/pubdev.svg
+    - assets/github.svg
