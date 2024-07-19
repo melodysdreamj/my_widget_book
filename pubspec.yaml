@@ -1,0 +1,38 @@
+name: my_widget_book
+description: "lego is all you need"
+#publish_to: 'none'
+#repository: https://github.com/melodysdreamj/lego
+
+version: 1.0.0
+
+environment:
+  sdk: '>=3.3.1 <4.0.0'
+
+dependencies:
+  bot_toast:
+  device_preview_minus: ^1.0.6
+  flutter:
+    sdk: flutter
+  flutter_screenutil:
+  flutter_svg:
+  flutter_zoom_drawer:
+  gap:
+  june:
+  june_flow_util:
+  keyboard_attachable:
+  modal_bottom_sheet:
+  styled_widget:
+  tuple: ^2.0.2
+  url_launcher: ^6.3.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints:
+  hello_world_page_lego:
+  june_lego:
+  screenutil_lego:
+  bot_toast_lego:
+
+flutter:
+  uses-material-design: true
